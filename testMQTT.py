@@ -18,6 +18,9 @@ import configMQTT
 def settimeout(duration): 
     pass
 
+def sub_cb(topic, msg):
+   print(msg)
+
 wlan = WLAN(mode=WLAN.STA)
 
 # classical mac writing convention
@@ -27,23 +30,31 @@ strID = ubinascii.hexlify(wlan.mac().sta_mac,'').decode()
 hostNameID = ("N"+strID[-5:]).upper()
 print("hostname = " + hostNameID)
 
-wlan.connect(configMQTT.WIFI_SSID, auth=(WLAN.WPA2, configMQTT.WIFI_PASS), timeout=5000)
+wlan.connect(configMQTT.WIFI_SSID, auth=(WLAN.WPA, configMQTT.WIFI_PASS), timeout=5000)
 
 while not wlan.isconnected(): 
      machine.idle()
 
 print("Connected to Wifi\n")
-client = MQTTClient("demo", configMQTT.MQTT_SERVER, port=1883)
-client.settimeout = settimeout
+client = MQTTClient("demo", "192.168.2.112", port=1883)
+client.set_callback(sub_cb)
+#client.settimeout = settimeout
 client.connect()
 
-topics="/"+hostNameID+"/lights"
+
+# client = MQTTClient("device_id", "io.adafruit.com",user="your_username", password="your_api_key", port=1883)
+
+# client.set_callback(sub_cb)
+# client.connect()
+
+#topics="/"+hostNameID+"/lights"
+topics="LAICHE/lights"
 print("publish to "+topics)
 
 while True:
      print("Sending ON")
-     client.publish(topics, "ON")
+     client.publish(topic = topics, msg = "ON")
      time.sleep(2)
      print("Sending OFF")
-     client.publish(topics, "OFF")
+     client.publish( topic = topics, msg = "OFF")
      time.sleep(2)

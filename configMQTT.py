@@ -3,7 +3,7 @@
 # Copyright (c) 2020, IUT / Université Jean-Monnet
 #
 
-WIFI_SSID = 'IUTSEmp1'
-WIFI_PASS = 'eureka2020'
+WIFI_SSID = 'linksysMCO'
+WIFI_PASS = 'tseDE2022'
 
-MQTT_SERVER = '10.3.141.1'
+MQTT_SERVER = '192.168.2.112'
